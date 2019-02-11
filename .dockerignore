@@ -1,0 +1,12 @@
+.git
+Dockerfile
+web/Dockerfile
+docker
+docker/*
+docker-compose*.yml
+**/docker-compose*.yml
+web
+scripts
+nginx-proxy.conf
+account.json
+config.json
