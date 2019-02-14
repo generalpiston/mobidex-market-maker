@@ -101,8 +101,12 @@ export default class MarketMakerWatchdog extends Watchdog {
 
   private async submitOrder(order: SignedOrder): Promise<void> {
     const client = new HttpClient(this.relayer);
-    client.submitOrderAsync(order, {
-      networkId: this.network
-    });
+    try {
+      await client.submitOrderAsync(order, {
+        networkId: this.network
+      });
+    } catch (err) {
+      console.warn(JSON.stringify(order), err);
+    }
   }
 }
