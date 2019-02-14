@@ -118,11 +118,11 @@ export class FixedVolatilitySpreadStrategy {
         makerAddress: account,
         takerAddress: NULL_ADDRESS,
         makerAssetAmount: Web3Wrapper.toBaseUnitAmount(
-          unitAskAmount,
+          new BigNumber(unitAskAmount.toFixed(8)),
           token.decimals
         ),
         takerAssetAmount: Web3Wrapper.toBaseUnitAmount(
-          unitAskAmount.times(priceInETH),
+          new BigNumber(unitAskAmount.times(priceInETH).toFixed(8)),
           token.decimals
         ),
         makerAssetData: this.assetData,
