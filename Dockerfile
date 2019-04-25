@@ -1,4 +1,4 @@
-FROM node:8.1.2-alpine
+FROM node:8.6.0-alpine
 
 USER root
 ENV NODE_ENV development
