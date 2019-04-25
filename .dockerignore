@@ -10,3 +10,4 @@ scripts
 nginx-proxy.conf
 account.json
 config.json
+node_modules
