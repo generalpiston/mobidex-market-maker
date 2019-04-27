@@ -7,6 +7,10 @@ import { getProviderRPCURL, getZeroClientProvider } from '../utils/ethereum';
 
 const WALLET_PATH = '../../../account.json';
 
+export function getWalletPath() {
+  return process.env.WALLET_PATH || path.join(__dirname, WALLET_PATH);
+}
+
 export async function loadWalletProviderWithoutPassword(
   network: number
 ): Promise<any> {
@@ -18,11 +22,7 @@ export async function loadWalletProvider(
   network: number,
   password: string
 ): Promise<any> {
-  return loadWalletProviderFromPath(
-    network,
-    password,
-    path.join(__dirname, WALLET_PATH)
-  );
+  return loadWalletProviderFromPath(network, password, getWalletPath());
 }
 
 export async function loadWalletProviderFromPath(
@@ -43,7 +43,7 @@ export async function loadWalletProviderFromPath(
 }
 
 export async function createWallet(): Promise<void> {
-  return createWalletInPath(path.join(__dirname, WALLET_PATH));
+  return createWalletInPath(getWalletPath());
 }
 
 export async function createWalletInPath(walletPath: string): Promise<void> {
