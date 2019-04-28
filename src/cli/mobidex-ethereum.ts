@@ -4,6 +4,13 @@ import * as commander from 'commander';
 import { getProviderRPCURL, getAccounts, getWeb3 } from '../lib/utils/ethereum';
 import { createWallet, loadWalletProviderWithoutPassword } from '../lib/wallet';
 
+function requireNetwork(fn) {
+  return options => {
+    if (!options.network) throw new Error('`--network` is required.');
+    return fn(options);
+  };
+}
+
 async function getAddresses(options) {
   const provider = await loadWalletProviderWithoutPassword(
     parseInt(options.network, 10)
@@ -38,19 +45,19 @@ commander.command('create-wallet').action(createWallet);
 commander
   .command('get-addresses')
   .option('-n, --network <network>', 'Network ID')
-  .action(getAddresses);
+  .action(requireNetwork(getAddresses));
 
 commander
   .command('get-balance')
   .option('-n, --network <network>', 'Network ID')
   .option('-a, --address <address>', 'Network ID')
-  .action(getBalance);
+  .action(requireNetwork(getBalance));
 
 commander
   .command('send-ether')
   .option('-n, --network <network>', 'Network ID')
   .option('-t, --to <to>', 'Receiving address')
   .option('-v, --value <value>', 'Amount of ether to send')
-  .action(sendEther);
+  .action(requireNetwork(sendEther));
 
 commander.parse(process.argv);

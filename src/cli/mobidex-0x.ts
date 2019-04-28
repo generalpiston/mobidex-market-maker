@@ -26,6 +26,13 @@ function decodeAssetData(assetData) {
   );
 }
 
+function requireNetwork(fn) {
+  return options => {
+    if (!options.network) throw new Error('`--network` is required.');
+    return fn(options);
+  };
+}
+
 async function getExchangeContractAddress(options) {
   const contractWrappers = await getContractWrappers(
     parseInt(options.network, 10)
@@ -109,41 +116,41 @@ async function setProxyAllowance(options) {
 commander
   .command('get-exchange-contract-address')
   .option('-n, --network <network>', 'Network ID')
-  .action(getExchangeContractAddress);
+  .action(requireNetwork(getExchangeContractAddress));
 commander
   .command('get-proxy-contract-address')
   .option('-n, --network <network>', 'Network ID')
-  .action(getProxyContractAddress);
+  .action(requireNetwork(getProxyContractAddress));
 commander
   .command('get-weth-address')
   .option('-n, --network <network>', 'Network ID')
-  .action(getWETH9Address);
+  .action(requireNetwork(getWETH9Address));
 commander
   .command('get-balance')
   .option('-n, --network <network>', 'Network ID')
   .option('-t, --token <token>', 'Token address')
-  .action(getBalance);
+  .action(requireNetwork(getBalance));
 commander
   .command('get-allowance')
   .option('-n, --network <network>', 'Network ID')
   .option('-t, --token <token>', 'Token address')
   .option('-c, --account <account>', 'Token address')
-  .action(getAllowance);
+  .action(requireNetwork(getAllowance));
 commander
   .command('wrap-ether')
   .option('-n, --network <network>', 'Network ID')
   .option('-a, --amount <amount>', 'Token amount')
-  .action(wrapEther);
+  .action(requireNetwork(wrapEther));
 commander
   .command('unwrap-ether')
   .option('-n, --network <network>', 'Network ID')
   .option('-a, --amount <amount>', 'Token amount')
-  .action(unwrapEther);
+  .action(requireNetwork(unwrapEther));
 commander
   .command('set-proxy-allowance')
   .option('-n, --network <network>', 'Network ID')
   .option('-t, --token <token>', 'Token address')
-  .action(setProxyAllowance);
+  .action(requireNetwork(setProxyAllowance));
 commander.command('encode-asset-data <address>').action(encodeAssetData);
 commander.command('decode-asset-data <data>').action(decodeAssetData);
 

@@ -11,6 +11,13 @@ import {
 } from '../lib/utils/kyber';
 import { loadWalletProviderWithoutPassword } from '../lib/wallet';
 
+function requireNetwork(fn) {
+  return options => {
+    if (!options.network) throw new Error('`--network` is required.');
+    return fn(options);
+  };
+}
+
 async function getProxyContractAddress(options) {
   const web3 = getWeb3(parseInt(options.network, 10));
   const address = await getKyberNetworkProxyContractAddress(web3);
@@ -49,20 +56,20 @@ commander
   .command('set-proxy-allowance')
   .option('-n, --network <network>', 'Network ID')
   .option('-t, --token <token>', 'Token address')
-  .action(setProxyAllowance);
+  .action(requireNetwork(setProxyAllowance));
 commander
   .command('get-contract-address')
   .option('-n, --network <network>', 'Network ID')
-  .action(getProxyContractAddress);
+  .action(requireNetwork(getProxyContractAddress));
 commander
   .command('get-buy-price')
   .option('-n, --network <network>', 'Network ID')
   .option('-t, --token <token>', 'Token address')
-  .action(getBuyPrice);
+  .action(requireNetwork(getBuyPrice));
 commander
   .command('get-sell-price')
   .option('-n, --network <network>', 'Network ID')
   .option('-t, --token <token>', 'Token address')
-  .action(getSellPrice);
+  .action(requireNetwork(getSellPrice));
 
 commander.parse(process.argv);
